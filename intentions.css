@@ -1,0 +1,12 @@
+@font-face {
+  font-family: "Fixedsys";
+  src: url('font/fsex300-webfont2.ttf') format('truetype');
+}
+
+body {
+  font-family: "Fixedsys";
+}
+
+.hidden {
+  display: none;
+}
