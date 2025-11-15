@@ -4,16 +4,36 @@
 
   function init() {
     qs("select").addEventListener("change", changeView);
+    let tickets = qsa(".ticket h2");
+    tickets.forEach(ticket => {
+      ticket.addEventListener("click", openPopup);
+    });
+    qs("#popup button").addEventListener("click", closePopup);
   }
 
   function changeView() {
     if (qs("select").value === "Seeking services") {
-      id("offering").classList.add("hidden");
-      id("seeking").classList.remove("hidden");
+      window.location.href = "index.html"
     } else {
-      id("seeking").classList.add("hidden");
-      id("offering").classList.remove("hidden");
+      window.location.href = "offering.html"
     }
+  }
+
+  function openPopup(evt) {
+    console.log(qs("#popup .price"));
+
+    /* Populate popup DOM */
+    qs("#popup h3").textContent = evt.target.parentNode.querySelector("h3").textContent;
+    qs("#popup h2").textContent = evt.target.parentNode.querySelector("h2").textContent;
+    qs("#popup .price").textContent = evt.target.parentNode.querySelector(".price").textContent;
+    qs("#popup .description").textContent = evt.target.parentNode.querySelector(".description").textContent;
+
+    /* Make popup visible */
+    id("popup").classList.remove("hidden");
+  }
+
+  function closePopup() {
+    id("popup").classList.add("hidden");
   }
 
   /* ********************************* HELPER FUNCTIONS ********************************* */
