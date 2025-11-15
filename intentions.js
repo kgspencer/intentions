@@ -1,6 +1,9 @@
 'use strict';
 (function() {
   window.addEventListener('load', init);
+  let firstPopup = true;
+  const height = 350;
+  const width = 550;
 
   function init() {
     qs("select").addEventListener("change", changeView);
@@ -8,7 +11,6 @@
     tickets.forEach(ticket => {
       ticket.addEventListener("click", openPopup);
     });
-    qs("#popup button").addEventListener("click", closePopup);
   }
 
   function changeView() {
@@ -20,20 +22,59 @@
   }
 
   function openPopup(evt) {
-    console.log(qs("#popup .price"));
+    /* Generate and populate popup DOM */
+    let button = gen("button");
+    button.textContent = "X";
+    button.addEventListener("click", closePopup);
+    let user = gen("h3");
+    user.textContent = evt.target.parentNode.querySelector("h3").textContent;
+    let tag = gen("h2");
+    tag.textContent = evt.target.parentNode.querySelector("h2").textContent;
+    let price = gen("p");
+    price.classList.add("price");
+    price.textContent = evt.target.parentNode.querySelector(".price").textContent;
+    let description = gen("p");
+    description.classList.add("description");
+    description.textContent = evt.target.parentNode.querySelector(".description").textContent;
 
-    /* Populate popup DOM */
+    let popup = gen("article");
+    popup.classList.add("popup");
+    popup.append(button, user, tag, price, description);
+    id("popups").appendChild(popup);
+
+    if (!firstPopup) {
+      /* Populate positions with random values*/
+      let top = Math.floor(Math.random() * (window.innerHeight + 1 - height));
+      let left = Math.floor(Math.random() * (window.innerWidth + 1 - width));
+
+      popup.style['top'] = top + 'px';
+      popup.style['left'] = left + 'px';
+    } else {
+      /* Center */
+      popup.style['top'] = '50%';
+      popup.style['left'] = '50%';
+      popup.style['transform'] = 'translate(-50%, -50%)';
+      firstPopup = false;
+    }
+
+    /*
     qs("#popup h3").textContent = evt.target.parentNode.querySelector("h3").textContent;
     qs("#popup h2").textContent = evt.target.parentNode.querySelector("h2").textContent;
     qs("#popup .price").textContent = evt.target.parentNode.querySelector(".price").textContent;
     qs("#popup .description").textContent = evt.target.parentNode.querySelector(".description").textContent;
+    */
 
-    /* Make popup visible */
+    /* Make popup visible
     id("popup").classList.remove("hidden");
+     */
   }
 
-  function closePopup() {
-    id("popup").classList.add("hidden");
+  /**
+   * Removes popup from DOM
+   */
+  function closePopup(evt) {
+    evt.target.parentNode.remove();
+    firstPopup = (id("popups").children.length <= 0);
   }
 
   /* ********************************* HELPER FUNCTIONS ********************************* */
