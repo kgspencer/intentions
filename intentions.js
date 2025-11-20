@@ -6,19 +6,10 @@
   const width = 550;
 
   function init() {
-    qs("select").addEventListener("change", changeView);
     let tickets = qsa(".ticket h2");
     tickets.forEach(ticket => {
       ticket.addEventListener("click", openPopup);
     });
-  }
-
-  function changeView() {
-    if (qs("select").value === "Seeking services") {
-      window.location.href = "index.html"
-    } else {
-      window.location.href = "offering.html"
-    }
   }
 
   function openPopup(evt) {
